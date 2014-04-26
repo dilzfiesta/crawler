@@ -1,0 +1,1 @@
+export DYLD_LIBRARY_PATH=/usr/local/mysql-5.6.12-osx10.6-x86_64/lib:$DYLD_LIBRARY_PATH
