@@ -111,7 +111,7 @@ sub convert {
   return $DATE_FORMAT->parse_datetime($date)->ymd('-')
 }
 
-# Translate text from German to English
+# Translate text from German to English 
 sub translate {
   my $txt = $_[0];
   my $url = $translate_url . uri_escape_utf8($txt);
