@@ -1,0 +1,23 @@
+<db-config>
+    <vendor>mysql</vendor>
+    <username>root</username>
+    <password>root</password>
+    <database>crawler</database>
+    <host>localhost</host>
+    <port>3306</port>
+    <table>
+        <jobs>
+        CREATE TABLE IF NOT EXISTS `crawler_jobs` (
+            `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
+            `position` varchar(255) NOT NULL,
+            `published_date` date NOT NULL,
+            `employer` varchar(100) NOT NULL,
+            `location` varchar(50) NOT NULL,
+            `start_date` date NOT NULL,
+            `url` varchar(1000) NOT NULL,
+            `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
+            PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB
+        </jobs>
+    </table>
+</db-config>
