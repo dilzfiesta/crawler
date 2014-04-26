@@ -54,12 +54,4 @@ sub insert {
   	$sth->execute or die "SQL Error: $DBI::errstr\n";
 }
 
-sub check_duplicate {
-
-}
-
-sub create_table {
-		
-}
-
 1;
