@@ -15,6 +15,7 @@
             `location` varchar(50) NOT NULL,
             `start_date` date NOT NULL,
             `url` varchar(1000) NOT NULL,
+            `email` varchar(100) NOT NULL,
             `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB

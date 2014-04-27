@@ -39,8 +39,8 @@ sub get_connection {
 
 sub insert {
 	my $dbh = &get_connection();
-	my ($position, $published_date, $employer, $location, $start_date, $url) = ($_[0], $_[1], $_[2], $_[3], $_[4], $_[5]);
-	$sql = "insert into crawler_jobs(position, published_date, employer, location, start_date, url) values(?, ?, ?, ?, ?, ?)";
+	my ($position, $published_date, $employer, $location, $start_date, $url, $email) = ($_[0], $_[1], $_[2], $_[3], $_[4], $_[5], $_[6]);
+	$sql = "insert into crawler_jobs(position, published_date, employer, location, start_date, url, email) values(?, ?, ?, ?, ?, ?, ?)";
 	$sth = $dbh->prepare($sql);
 	$sth->bind_param(1, $position);
 	$sth->bind_param(2, $published_date);
@@ -48,6 +48,7 @@ sub insert {
   	$sth->bind_param(4, $location);
   	$sth->bind_param(5, $start_date);
   	$sth->bind_param(6, $url);
+  	$sth->bind_param(7, $email);
   	$sth->execute or die "SQL Error: $DBI::errstr\n";
 }
 

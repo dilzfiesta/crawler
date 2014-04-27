@@ -7,6 +7,7 @@ use LWP::Simple;
 use HTML::TreeBuilder::XPath;
 use URI::Escape;
 use DateTime::Format::Strptime;
+use Email::Address;
 
 # Custom pakage
 use Database;
@@ -61,7 +62,7 @@ sub get_link {
 sub get_jobs {
   my ($url) = ($_[0]);
   my $line = 1;
-  my $count, $position, $date_of_pub, $employer, $location, $start_date, $link = '';
+  my $count, $position, $date_of_pub, $employer, $location, $start_date, $email, $link = '';
 
   # Fetch the job page
   my $page = get( get_absolute_url($url) ) or die $!;
@@ -91,8 +92,10 @@ sub get_jobs {
       print "  $line. ". translate($position) ."\n";
 	  $line++;
 
+	  $email = get_employer_email($link);
+
 	  # Insert relevent records in database
-	  insert(translate($position), convert($date_of_pub), $employer, translate($location), convert($start_date), get_absolute_url($link));
+	  insert(translate($position), convert($date_of_pub), $employer, translate($location), convert($start_date), get_absolute_url($link), $email);
     }
   }
   $x->delete;
@@ -140,6 +143,22 @@ sub check_requirement {
 	
 	if($text =~ /$LIST/ig) { return 1; }
     else { return 0; }
+}
+
+#Get employer email address
+sub get_employer_email {
+	my $link = $_[0];
+    my $page = get( get_absolute_url($link) ) or die $!;
+
+    my $p = HTML::TreeBuilder::XPath->new_from_content($page);
+    my $data = $p->findnodes( '//table[@class="details"]')->[3];
+    my $text = $data->as_HTML();
+	$text =~ s/'<td>'/' '/gi;
+	$text =~ s/'<\/td>'/' '/gi;
+    $p->delete;
+
+	my @addrs = Email::Address->parse($text);
+	return $addrs[0]->format;
 }
 
 
