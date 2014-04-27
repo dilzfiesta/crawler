@@ -9,13 +9,13 @@
         <jobs>
         CREATE TABLE IF NOT EXISTS `crawler_jobs` (
             `id` int(5) unsigned NOT NULL AUTO_INCREMENT,
-            `position` varchar(255) NOT NULL,
-            `published_date` date NOT NULL,
-            `employer` varchar(100) NOT NULL,
-            `location` varchar(50) NOT NULL,
-            `start_date` date NOT NULL,
-            `url` varchar(1000) NOT NULL,
-            `email` varchar(100) NOT NULL,
+            `position` varchar(255),
+            `published_date` date,
+            `employer` varchar(100),
+            `location` varchar(50),
+            `start_date` date,
+            `url` varchar(1000),
+            `email` varchar(100),
             `created` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
             PRIMARY KEY (`id`)
         ) ENGINE=InnoDB

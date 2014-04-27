@@ -8,6 +8,7 @@ use HTML::TreeBuilder::XPath;
 use URI::Escape;
 use DateTime::Format::Strptime;
 use Email::Address;
+use Email::Valid;
 
 # Custom pakage
 use Database;
@@ -158,7 +159,7 @@ sub get_employer_email {
     $p->delete;
 
 	my @addrs = Email::Address->parse($text);
-	return $addrs[0]->format;
+	return Email::Valid->address( $addrs[0]->format );
 }
 
 
