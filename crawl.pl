@@ -21,6 +21,9 @@ my $page_no = 1;
 my @revelent_list = ('java', 'php');
 my $LIST = join("|", @revelent_list);
 
+# Get last inserted record date 
+my $last_published_date = db_last_published_date();
+
 # Correct the date format as per MySQL database
 my $DATE_FORMAT = DateTime::Format::Strptime->new(
    pattern => '%d.%m.%Y',
@@ -93,10 +96,16 @@ sub get_jobs {
       print "  $line. ". translate($position) ."\n";
 	  $line++;
 
+	  # Exit if the record already exists by checking its last published date
+	  if($last_published_date ne "" && convert($date_of_pub) eq $last_published_date) {
+		exit;
+	  }
+
+	  # Get employer's email
 	  $email = get_employer_email($link);
 
 	  # Insert relevent records in database
-	  insert(translate($position), convert($date_of_pub), $employer, translate($location), convert($start_date), get_absolute_url($link), $email);
+	  db_insert(translate($position), convert($date_of_pub), $employer, translate($location), convert($start_date), get_absolute_url($link), $email);
     }
   }
   $x->delete;
@@ -159,9 +168,10 @@ sub get_employer_email {
     $p->delete;
 
 	my @addrs = Email::Address->parse($text);
-	return Email::Valid->address( $addrs[0]->format );
+	if($addrs[0] ne "") {
+		return Email::Valid->address( $addrs[0]->format );
+	}
 }
-
 
 
 # All starts here..

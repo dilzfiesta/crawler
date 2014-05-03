@@ -12,7 +12,7 @@ use XML::Simple;
 our @ISA= qw( Exporter );
 
 # these are exported by default.
-our @EXPORT = qw( insert );
+our @EXPORT = qw( db_insert db_last_published_date );
 
 # Global variables
 my $dbh = &init;
@@ -37,7 +37,7 @@ sub get_connection {
   	return $dbh;
 }
 
-sub insert {
+sub db_insert {
 	my $dbh = &get_connection();
 	my ($position, $published_date, $employer, $location, $start_date, $url, $email) = ($_[0], $_[1], $_[2], $_[3], $_[4], $_[5], $_[6]);
 	$sql = "insert into crawler_jobs(position, published_date, employer, location, start_date, url, email) values(?, ?, ?, ?, ?, ?, ?)";
@@ -50,6 +50,16 @@ sub insert {
   	$sth->bind_param(6, $url);
   	$sth->bind_param(7, $email);
   	$sth->execute or die "SQL Error: $DBI::errstr\n";
+}
+
+sub db_last_published_date() {
+	my $dbh = &get_connection();
+	$sql = "select max(published_date) from crawler_jobs";
+	$sth = $dbh->prepare($sql);
+	$sth->execute or die "SQL Error: $DBI::errstr\n";
+	while ( my $fields = $sth->fetchrow_arrayref() ) {
+		return $fields->[0];
+	}
 }
 
 1;
